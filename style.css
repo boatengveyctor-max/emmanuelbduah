@@ -17,10 +17,12 @@
   --bg-surface-3: #1c2a23;
   --bg-surface-elevated: #22322a;
 
-  --text-white: #ffffff;
-  --text-high-contrast: #f4f6f4;
-  --text-muted: #95a39a;
-  --text-dim: #606d64;
+  --text-white: #ffffff;         /* 19.32:1 on bg — AAA ✅ */
+  --text-high-contrast: #f4f6f4; /* 17.79:1 on bg — AAA ✅ */
+  --text-muted: #95a39a;         /*  7.34:1 on bg — AAA ✅ — body paragraphs, descriptions */
+  /* WCAG FIX: --text-dim was #606d64 (3.56:1 — FAIL for small text).
+     Upgraded to #7a8c84 (5.21:1 — AA ✅) for all small monospace UI labels (< 16px). */
+  --text-dim: #7a8c84;           /*  5.21:1 on bg — AA ✅ */
 
   --lemon: #8fff00;
   --lemon-bright: #39ff14;

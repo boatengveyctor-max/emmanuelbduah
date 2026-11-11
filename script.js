@@ -208,8 +208,11 @@ document.addEventListener('DOMContentLoaded', () => {
   // Input sanitization: strips non-printable control characters
   const sanitizeString = (str) => {
     if (typeof str !== 'string') return '';
-    return str.trim().replace(/[\u0000-\u001f\u007f]/g, '');
+    return str.replace(/[\u0000-\u001f\u007f]/g, '').trim();
   };
+
+  // Normalize human-entered whitespace before validation or composing a link.
+  const normalizeField = (str) => sanitizeString(str).replace(/\s+/gu, ' ');
 
   // Character counter for textarea
   if (messageInput && charCounter) {
@@ -230,10 +233,10 @@ document.addEventListener('DOMContentLoaded', () => {
         el: document.getElementById('contact-name'),
         errorEl: document.getElementById('name-error'),
         validate: (val) => {
-          const cleaned = sanitizeString(val);
+          const cleaned = normalizeField(val);
           if (cleaned.length < 2) return 'Please enter your full name (minimum 2 characters).';
           if (cleaned.length > 80) return 'Name must not exceed 80 characters.';
-          if (/[<>]/.test(cleaned)) return 'HTML tag characters (< or >) are not permitted.';
+          if (!/^[\p{L}\p{M}][\p{L}\p{M} .’'-]*$/u.test(cleaned)) return 'Use letters, spaces, apostrophes, periods, or hyphens in your name.';
           return '';
         }
       },
@@ -241,12 +244,12 @@ document.addEventListener('DOMContentLoaded', () => {
         el: document.getElementById('contact-email'),
         errorEl: document.getElementById('email-error'),
         validate: (val) => {
-          const cleaned = sanitizeString(val);
+          const cleaned = normalizeField(val);
           // Strict RFC 5322 regex
           const emailPattern = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)+$/;
           if (!cleaned) return 'Email address is required.';
           if (cleaned.length > 254) return 'Email address exceeds maximum length.';
-          if (!emailPattern.test(cleaned)) return 'Please provide a valid email format (e.g., name@domain.com).';
+          if (!emailPattern.test(cleaned) || cleaned.includes('..')) return 'Please provide a valid email format (e.g., name@domain.com).';
           return '';
         }
       },
@@ -254,7 +257,7 @@ document.addEventListener('DOMContentLoaded', () => {
         el: document.getElementById('contact-subject'),
         errorEl: document.getElementById('subject-error'),
         validate: (val) => {
-          const cleaned = sanitizeString(val);
+          const cleaned = normalizeField(val);
           const validOptions = [
             'Full-Stack Web Application',
             'Graphic Design / Branding / Flyers',
@@ -357,9 +360,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
       // Sanitized Payload Object (Ready for API integration & WhatsApp forwarding)
       const sanitizedPayload = {
-        name: sanitizeString(fields.name.el.value),
-        email: sanitizeString(fields.email.el.value),
-        subject: sanitizeString(fields.subject.el.value),
+        name: normalizeField(fields.name.el.value),
+        email: normalizeField(fields.email.el.value),
+        subject: normalizeField(fields.subject.el.value),
         message: sanitizeString(fields.message.el.value),
         timestamp: new Date().toISOString()
       };
