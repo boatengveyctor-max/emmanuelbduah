@@ -11,6 +11,45 @@
 
 document.addEventListener('DOMContentLoaded', () => {
   // --------------------------------------------------------------------------
+  // 0. Persistent, accessible color theme
+  // --------------------------------------------------------------------------
+  const themeToggle = document.querySelector('.theme-toggle');
+  const themeRoot = document.documentElement;
+  const storedTheme = (() => {
+    try {
+      return window.localStorage.getItem('portfolio-theme');
+    } catch (_) {
+      return null;
+    }
+  })();
+
+  const applyTheme = (isLight) => {
+    themeRoot.classList.toggle('light-theme', isLight);
+    const themeColor = document.querySelector('meta[name="theme-color"]');
+    const colorScheme = document.querySelector('meta[name="color-scheme"]');
+    if (themeColor) themeColor.content = isLight ? '#f3f4f2' : '#1a1c1e';
+    if (colorScheme) colorScheme.content = isLight ? 'light' : 'dark';
+    if (!themeToggle) return;
+    themeToggle.setAttribute('aria-checked', String(isLight));
+    const action = isLight ? 'Switch to dark ash mode' : 'Switch to light mode';
+    themeToggle.setAttribute('aria-label', action);
+    themeToggle.setAttribute('title', action);
+  };
+
+  applyTheme(storedTheme === 'light');
+  if (themeToggle) {
+    themeToggle.addEventListener('click', () => {
+      const isLight = !themeRoot.classList.contains('light-theme');
+      applyTheme(isLight);
+      try {
+        window.localStorage.setItem('portfolio-theme', isLight ? 'light' : 'dark');
+      } catch (_) {
+        // Theme still works for this page view when storage is unavailable.
+      }
+    });
+  }
+
+  // --------------------------------------------------------------------------
   // 1. Mobile Navigation & Accessible Menu Toggle
   // --------------------------------------------------------------------------
   const menuToggle = document.querySelector('.menu-toggle');
@@ -26,9 +65,23 @@ document.addEventListener('DOMContentLoaded', () => {
     menuToggle.addEventListener('click', () => toggleMenu());
 
     // Close menu when clicking navigation links
-    const navLinks = primaryNav.querySelectorAll('.nav-link, .button-nav');
+    const navLinks = primaryNav.querySelectorAll('.nav-link, .nav-email');
     navLinks.forEach((link) => {
-      link.addEventListener('click', () => {
+      link.addEventListener('click', (event) => {
+        if (link.classList.contains('nav-link')) {
+          const destination = document.querySelector(link.getAttribute('href'));
+          if (destination) {
+            event.preventDefault();
+            const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            const headerHeight = document.querySelector('.site-header')?.offsetHeight || 0;
+            const destinationTop = destination.getBoundingClientRect().top + window.scrollY - headerHeight - 12;
+            window.scrollTo({ top: Math.max(0, destinationTop), behavior: reduceMotion ? 'auto' : 'smooth' });
+            destination.classList.remove('section-arrival');
+            void destination.offsetWidth;
+            destination.classList.add('section-arrival');
+            navLinks.forEach((item) => item.classList.toggle('is-active', item === link));
+          }
+        }
         if (primaryNav.classList.contains('is-open')) {
           toggleMenu(false);
         }
@@ -220,7 +273,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const length = messageInput.value.length;
       charCounter.textContent = `${length} / 3000`;
       if (length > 2900) {
-        charCounter.style.color = 'var(--lemon)';
+        charCounter.style.color = 'var(--green)';
       } else {
         charCounter.style.color = 'var(--text-dim)';
       }
@@ -487,10 +540,8 @@ _Transmitted via Boateng Emmanuel Duah Portfolio Web Portal_`;
             const href = link.getAttribute('href');
             if (href === `#${currentId}`) {
               link.classList.add('is-active');
-              link.style.color = 'var(--lemon)';
             } else {
               link.classList.remove('is-active');
-              link.style.color = '';
             }
           });
         }
