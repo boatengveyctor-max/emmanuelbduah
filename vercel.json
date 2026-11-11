@@ -46,7 +46,7 @@
       ]
     },
     {
-      "source": "/img/(.*)",
+      "source": "/(img/.*|assets/.*|.*\\.pdf)",
       "headers": [
         {
           "key": "Cache-Control",

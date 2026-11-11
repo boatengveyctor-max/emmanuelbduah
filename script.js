@@ -355,7 +355,7 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
       }
 
-      // Sanitized Payload Object (Ready for API integration / Formspree / backend)
+      // Sanitized Payload Object (Ready for API integration & WhatsApp forwarding)
       const sanitizedPayload = {
         name: sanitizeString(fields.name.el.value),
         email: sanitizeString(fields.email.el.value),
@@ -368,15 +368,48 @@ document.addEventListener('DOMContentLoaded', () => {
       if (submitBtn) {
         submitBtn.disabled = true;
         const btnText = submitBtn.querySelector('.btn-text');
-        if (btnText) btnText.textContent = 'Transmitting securely...';
+        if (btnText) btnText.textContent = 'Formatting for WhatsApp...';
       }
 
-      // Simulate network request with visual feedback
+      // Format clean, professional WhatsApp message
+      const whatsappMessage = 
+`*NEW PORTFOLIO INQUIRY*
+━━━━━━━━━━━━━━━━━━━━
+*Name:* ${sanitizedPayload.name}
+*Email:* ${sanitizedPayload.email}
+*Project Focus:* ${sanitizedPayload.subject}
+
+*Message:*
+${sanitizedPayload.message}
+━━━━━━━━━━━━━━━━━━━━
+_Transmitted via Boateng Emmanuel Duah Portfolio Web Portal_`;
+
+      const whatsappUrl = `https://wa.me/233542649394?text=${encodeURIComponent(whatsappMessage)}`;
+
+      // Simulate quick processing then forward to WhatsApp
       setTimeout(() => {
         if (formStatus) {
-          formStatus.textContent = `Thank you, ${sanitizedPayload.name}. Your message regarding "${sanitizedPayload.subject}" has been validated and queued for dispatch. Emmanuel will reply promptly.`;
+          formStatus.replaceChildren(); // Safe DOM clearing
+          
+          const statusText = document.createElement('p');
+          statusText.textContent = `Thank you, ${sanitizedPayload.name}! Your inquiry has been processed and forwarded to Boateng Emmanuel Duah on WhatsApp (+233 54 264 9394).`;
+          
+          const waLink = document.createElement('a');
+          waLink.href = whatsappUrl;
+          waLink.target = '_blank';
+          waLink.rel = 'noopener noreferrer';
+          waLink.className = 'button button-card-primary';
+          waLink.style.marginTop = '12px';
+          waLink.style.display = 'inline-flex';
+          waLink.textContent = 'Open in WhatsApp Now →';
+
+          formStatus.appendChild(statusText);
+          formStatus.appendChild(waLink);
           formStatus.classList.add('is-success');
         }
+
+        // Open WhatsApp in a new tab
+        window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
 
         contactForm.reset();
 
@@ -392,9 +425,9 @@ document.addEventListener('DOMContentLoaded', () => {
         if (submitBtn) {
           submitBtn.disabled = false;
           const btnText = submitBtn.querySelector('.btn-text');
-          if (btnText) btnText.textContent = 'Transmit Message';
+          if (btnText) btnText.textContent = 'Transmit via WhatsApp';
         }
-      }, 700);
+      }, 500);
     });
   }
 
@@ -407,7 +440,7 @@ document.addEventListener('DOMContentLoaded', () => {
       // If user clicks on desktop, copy to clipboard for convenience
       if (navigator.clipboard && navigator.clipboard.writeText) {
         e.preventDefault();
-        const emailAddress = 'emmanuelboateng.dev@gmail.com';
+        const emailAddress = 'emmanuelbduah@outlook.com';
         navigator.clipboard.writeText(emailAddress).then(() => {
           const originalText = copyEmailBtn.textContent;
           copyEmailBtn.textContent = 'Email address copied to clipboard!';
