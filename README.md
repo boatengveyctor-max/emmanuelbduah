@@ -35,8 +35,8 @@ MY PORTFOLIO/
 ├── assets/
 │   └── Boateng_Emmanuel_Duah_Resume.pdf # Official resume file in assets path
 ├── img/
-│   ├── profile.png                      # Profile portrait photograph
-│   └── _MG_1567   DigiWorld.png         # High-resolution original portrait image
+│   ├── profile.webp                      # Profile portrait photograph
+│   └── _MG_1567   DigiWorld.webp         # High-resolution original portrait image
 └── README.md                            # Documentation & hosting deployment guide
 ```
 

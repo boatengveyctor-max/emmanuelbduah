@@ -112,14 +112,14 @@ document.addEventListener('DOMContentLoaded', () => {
   // 2. Filterable Graphic Design Gallery
   // --------------------------------------------------------------------------
   // ADDING AN IMAGE:
-  // 1. Put the file in img/designs/ (example: img/designs/new-flyer.jpg).
+  // 1. Put the file in img/designs/ (example: img/designs/new-flyer.webp).
   // 2. Copy the object below and paste it inside this array, before the ];
   // 3. Separate each object with a comma. Keep the quotes and braces.
   // Cards are created with DOM APIs; metadata is never parsed as HTML.
   const customDesigns = [
     // Copy this example for another image. Keep a comma between entries:
      {
-       src: 'img/designs/new_month.jpg',
+       src: 'img/designs/new_month.webp',
        title: 'My Second Design',
        subtitle: 'Brand identity · Illustrator',
        category: 'branding',
@@ -129,7 +129,7 @@ document.addEventListener('DOMContentLoaded', () => {
        alt: 'Describe what is visible in this design.'
      },
       {
-       src: 'img/designs/Ohenewaa_ls_green.png',
+       src: 'img/designs/Ohenewaa_ls_green.webp',
        title: 'My Second Design',
        subtitle: 'Brand identity · Illustrator',
        category: 'branding',
@@ -139,7 +139,7 @@ document.addEventListener('DOMContentLoaded', () => {
        alt: 'Describe what is visible in this design.'
      },
      {
-       src: 'img/designs/Easter.jpg',
+       src: 'img/designs/Easter.webp',
        title: 'My Second Design',
        subtitle: 'Brand identity · Illustrator',
        category: 'branding',
@@ -149,7 +149,7 @@ document.addEventListener('DOMContentLoaded', () => {
        alt: 'Describe what is visible in this design.'
      },
      {
-       src: 'img/designs/oval.png',
+       src: 'img/designs/oval.webp',
        title: 'My Second Design',
        subtitle: 'Brand identity · Illustrator',
        category: 'branding',
@@ -159,7 +159,7 @@ document.addEventListener('DOMContentLoaded', () => {
        alt: 'Describe what is visible in this design.'
      },
      {
-       src: 'img/designs/boat.jpg',
+       src: 'img/designs/boat.webp',
        title: 'My Second Design',
        subtitle: 'Brand identity · Illustrator',
        category: 'branding',
@@ -169,7 +169,7 @@ document.addEventListener('DOMContentLoaded', () => {
        alt: 'Describe what is visible in this design.'
      },
      {
-       src: 'img/designs/logo.jpg',
+       src: 'img/designs/logo.webp',
        title: 'My Second Design',
        subtitle: 'Brand identity · Illustrator',
        category: 'branding',
@@ -179,7 +179,7 @@ document.addEventListener('DOMContentLoaded', () => {
        alt: 'Describe what is visible in this design.'
      },
      {
-       src: 'img/designs/bc.jpg',
+       src: 'img/designs/bc.webp',
        title: 'My Second Design',
        subtitle: 'Brand identity · Illustrator',
        category: 'branding',
@@ -189,7 +189,7 @@ document.addEventListener('DOMContentLoaded', () => {
        alt: 'Describe what is visible in this design.'
      },
      {
-       src: 'img/designs/kuffour1.jpg',
+       src: 'img/designs/kuffour1.webp',
        title: 'My Second Design',
        subtitle: 'Brand identity · Illustrator',
        category: 'branding',
@@ -199,7 +199,7 @@ document.addEventListener('DOMContentLoaded', () => {
        alt: 'Describe what is visible in this design.'
      },
      {
-       src: 'img/designs/church.jpg',
+       src: 'img/designs/church.webp',
        title: 'My Second Design',
        subtitle: 'Brand identity · Illustrator',
        category: 'branding',
