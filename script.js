@@ -111,8 +111,177 @@ document.addEventListener('DOMContentLoaded', () => {
   // --------------------------------------------------------------------------
   // 2. Filterable Graphic Design Gallery
   // --------------------------------------------------------------------------
+  // ADDING AN IMAGE:
+  // 1. Put the file in img/designs/ (example: img/designs/new-flyer.jpg).
+  // 2. Copy the object below and paste it inside this array, before the ];
+  // 3. Separate each object with a comma. Keep the quotes and braces.
+  // Cards are created with DOM APIs; metadata is never parsed as HTML.
+  const customDesigns = [
+    // Copy this example for another image. Keep a comma between entries:
+     {
+       src: 'img/designs/new_month.jpg',
+       title: 'My Second Design',
+       subtitle: 'Brand identity · Illustrator',
+       category: 'branding',
+       type: 'Brand Identity',
+       tool: 'Adobe Illustrator',
+       description: 'A short description of this design.',
+       alt: 'Describe what is visible in this design.'
+     },
+      {
+       src: 'img/designs/Ohenewaa_ls_green.png',
+       title: 'My Second Design',
+       subtitle: 'Brand identity · Illustrator',
+       category: 'branding',
+       type: 'Brand Identity',
+       tool: 'Adobe Illustrator',
+       description: 'A short description of this design.',
+       alt: 'Describe what is visible in this design.'
+     },
+     {
+       src: 'img/designs/Easter.jpg',
+       title: 'My Second Design',
+       subtitle: 'Brand identity · Illustrator',
+       category: 'branding',
+       type: 'Brand Identity',
+       tool: 'Adobe Illustrator',
+       description: 'A short description of this design.',
+       alt: 'Describe what is visible in this design.'
+     },
+     {
+       src: 'img/designs/oval.png',
+       title: 'My Second Design',
+       subtitle: 'Brand identity · Illustrator',
+       category: 'branding',
+       type: 'Brand Identity',
+       tool: 'Adobe Illustrator',
+       description: 'A short description of this design.',
+       alt: 'Describe what is visible in this design.'
+     },
+     {
+       src: 'img/designs/boat.jpg',
+       title: 'My Second Design',
+       subtitle: 'Brand identity · Illustrator',
+       category: 'branding',
+       type: 'Brand Identity',
+       tool: 'Adobe Illustrator',
+       description: 'A short description of this design.',
+       alt: 'Describe what is visible in this design.'
+     },
+     {
+       src: 'img/designs/logo.jpg',
+       title: 'My Second Design',
+       subtitle: 'Brand identity · Illustrator',
+       category: 'branding',
+       type: 'Brand Identity',
+       tool: 'Adobe Illustrator',
+       description: 'A short description of this design.',
+       alt: 'Describe what is visible in this design.'
+     },
+     {
+       src: 'img/designs/bc.jpg',
+       title: 'My Second Design',
+       subtitle: 'Brand identity · Illustrator',
+       category: 'branding',
+       type: 'Brand Identity',
+       tool: 'Adobe Illustrator',
+       description: 'A short description of this design.',
+       alt: 'Describe what is visible in this design.'
+     },
+     {
+       src: 'img/designs/kuffour1.jpg',
+       title: 'My Second Design',
+       subtitle: 'Brand identity · Illustrator',
+       category: 'branding',
+       type: 'Brand Identity',
+       tool: 'Adobe Illustrator',
+       description: 'A short description of this design.',
+       alt: 'Describe what is visible in this design.'
+     },
+     {
+       src: 'img/designs/church.jpg',
+       title: 'My Second Design',
+       subtitle: 'Brand identity · Illustrator',
+       category: 'branding',
+       type: 'Brand Identity',
+       tool: 'Adobe Illustrator',
+       description: 'A short description of this design.',
+       alt: 'Describe what is visible in this design.'
+     },
+  ];
+
+  const galleryGrid = document.getElementById('design-gallery-grid');
+  const validCategories = new Set(['flyers', 'branding', 'digital-art']);
+  const safeImagePath = /^img\/designs\/[a-z0-9/_-]+\.(?:png|jpe?g|webp)$/i;
+
+  const appendDesignImage = (design) => {
+    if (!galleryGrid || !design || !safeImagePath.test(design.src || '') ||
+        !validCategories.has(design.category) || !design.title) return;
+
+    const card = document.createElement('article');
+    card.className = 'gallery-card';
+    card.setAttribute('data-category', design.category);
+    card.setAttribute('data-title', design.title);
+    card.setAttribute('data-type', design.type || 'Graphic Design');
+    card.setAttribute('data-tool', design.tool || 'Design tools not specified');
+    card.setAttribute('data-description', design.description || '');
+    card.setAttribute('tabindex', '0');
+    card.setAttribute('role', 'button');
+    card.setAttribute('aria-haspopup', 'dialog');
+    card.setAttribute('aria-label', `View ${design.title} in the design lightbox`);
+
+    const visual = document.createElement('div');
+    visual.className = 'card-visual gallery-image-visual';
+
+    const image = document.createElement('img');
+    image.className = 'gallery-design-image';
+    image.src = design.src;
+    image.alt = design.alt || design.title;
+    image.loading = 'lazy';
+    image.decoding = 'async';
+
+    const fallback = document.createElement('span');
+    fallback.className = 'gallery-image-fallback';
+    fallback.textContent = 'Image not found — check the file path in script.js.';
+    image.addEventListener('error', () => visual.classList.add('has-image-error'));
+    visual.appendChild(image);
+    visual.appendChild(fallback);
+
+    const meta = document.createElement('div');
+    meta.className = 'card-meta';
+    const metaText = document.createElement('div');
+    metaText.className = 'card-meta-text';
+    const title = document.createElement('h4');
+    title.className = 'card-title';
+    title.textContent = design.title;
+    const subtitle = document.createElement('p');
+    subtitle.className = 'card-subtitle';
+    subtitle.textContent = design.subtitle || design.type || 'Graphic Design';
+    const openLabel = document.createElement('span');
+    openLabel.className = 'card-view-btn';
+    openLabel.setAttribute('aria-hidden', 'true');
+    openLabel.textContent = 'OPEN';
+
+    metaText.append(title, subtitle);
+    meta.append(metaText, openLabel);
+    card.append(visual, meta);
+    galleryGrid.appendChild(card);
+  };
+
+  customDesigns.forEach(appendDesignImage);
+
   const filterButtons = document.querySelectorAll('.filter-btn');
   const galleryCards = document.querySelectorAll('.gallery-card');
+
+  // Keep toolbar totals accurate as custom image cards are added.
+  filterButtons.forEach((btn) => {
+    const category = btn.getAttribute('data-filter') || 'all';
+    const count = Array.from(galleryCards).filter((card) => (
+      category === 'all' || card.getAttribute('data-category') === category
+    )).length;
+    const countLabel = btn.querySelector('.filter-count');
+    if (countLabel) countLabel.textContent = String(count).padStart(2, '0');
+  });
 
   if (filterButtons.length && galleryCards.length) {
     filterButtons.forEach((btn) => {

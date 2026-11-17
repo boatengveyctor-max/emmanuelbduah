@@ -988,12 +988,39 @@ a:hover .btn-svg {
   padding: 18px;
   overflow: hidden;
   isolation: isolate;
+  filter: saturate(0.68);
   transition: transform var(--transition-slow);
 }
 
 .gallery-card:hover .card-visual {
+  filter: saturate(0.8);
   transform: scale(1.02);
 }
+
+/* User supplied portfolio art, listed in customDesigns in script.js. */
+.gallery-image-visual {
+  /* Adjust these two values to resize uploaded gallery images. */
+  --design-image-width: 100%;
+  --design-image-height: 100%;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  background-color: var(--bg-surface-2);
+}
+.gallery-design-image {
+  width: var(--design-image-width);
+  height: var(--design-image-height);
+  object-fit: contain;
+}
+.gallery-image-fallback {
+  display: none;
+  padding: 20px;
+  color: var(--text-muted);
+  font: 0.75rem/1.5 var(--font-mono);
+  text-align: center;
+}
+.gallery-image-visual.has-image-error .gallery-design-image { display: none; }
+.gallery-image-visual.has-image-error .gallery-image-fallback { display: block; }
 
 .artwork-hud-bar {
   display: flex;
@@ -2458,6 +2485,21 @@ a:hover .btn-svg {
   transform: none;
 }
 
+/* Uploaded artwork uses the available popup height without being cropped. */
+.lightbox-preview-area .gallery-image-visual {
+  height: min(68vh, 760px);
+  min-height: 0;
+  padding: 12px;
+}
+
+.lightbox-preview-area .gallery-design-image {
+  width: 100%;
+  height: 100%;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
 .lightbox-tag-row {
   display: flex;
   align-items: center;
@@ -2708,6 +2750,10 @@ a:hover .btn-svg {
 
   .lightbox-preview-area .card-visual {
     height: 280px;
+  }
+
+  .lightbox-preview-area .gallery-image-visual {
+    height: min(52vh, 520px);
   }
 
   .footer-container {
