@@ -139,7 +139,7 @@ document.addEventListener('DOMContentLoaded', () => {
        alt: 'Describe what is visible in this design.'
      },
      {
-       src: 'img/designs/Easter.webp',
+       src: 'img/designs/EASTER.webp',
        title: 'My Second Design',
        subtitle: 'Brand identity · Illustrator',
        category: 'branding',
@@ -189,7 +189,7 @@ document.addEventListener('DOMContentLoaded', () => {
        alt: 'Describe what is visible in this design.'
      },
      {
-       src: 'img/designs/kuffour1.webp',
+       src: 'img/designs/Kuffour1.webp',
        title: 'My Second Design',
        subtitle: 'Brand identity · Illustrator',
        category: 'branding',
